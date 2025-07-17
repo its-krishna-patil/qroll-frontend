@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StudentDashboard from "./pages/StudentDashboard";
-//import Room from "./pages/Room";
+import Room from "./pages/Room";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
