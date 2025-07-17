@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Room from "./pages/Room";
+import StudentDashboard from "./pages/StudentDashboard";
+//import Room from "./pages/Room";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -14,6 +15,7 @@ function App() {
         <Route path="/room/:roomId" element={<Room />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin-login" element={<AdminLogin />} /> {/* ✅ fix */}
+        <Route path="/student" element={<StudentDashboard />} />
       </Routes>
     </Router>
   );
