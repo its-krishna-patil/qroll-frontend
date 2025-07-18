@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import API from '../api'; 
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
@@ -21,7 +21,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://qroll-production.up.railway.app/api/register", form);
+      await API.post("/api/register", form);
       toast.success("✅ Registered successfully");
       setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
