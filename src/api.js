@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // optional: only if backend uses cookies
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000",
+  withCredentials: true,
 });
 
 export default API;
