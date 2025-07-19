@@ -5,8 +5,8 @@ export default {
   ],
   theme: {
     extend: {
-      animation: {
-        'spin-slow': 'spin 8s linear infinite',
+      colors: {
+        background: '#0f172a',
       },
     },
   },
