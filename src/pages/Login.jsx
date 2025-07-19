@@ -1,11 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,64 +18,70 @@ const Login = () => {
       const res = await axios.post("https://qroll-production.up.railway.app/api/login", form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      toast.success("🎉 Login successful!");
-      setTimeout(() => navigate("/room/301"), 1200);
+      navigate("/room/301");
     } catch {
-      toast.error("❌ Login failed");
+      setStatus("❌ Login failed");
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center px-4">
-      <ToastContainer />
-      <div className="relative w-full max-w-sm rounded-xl bg-[#1e293b] px-6 py-8 shadow-lg overflow-hidden">
-        {/* Glow effect */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-pink-500 via-blue-500 to-green-400 opacity-20 animate-spin-slow blur-lg z-0" />
+    <div className="relative min-h-screen flex items-center justify-center bg-[#0f172a] overflow-hidden">
+      {/* Rotating light effect */}
+      <motion.div
+        className="absolute w-[500px] h-[500px] bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-full blur-3xl opacity-30"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+      />
 
-        <div className="relative z-10">
-          <h2 className="text-white text-center text-2xl font-semibold mb-6 tracking-wide">
-            🔊 LOGIN ❤️
-          </h2>
+      {/* Login card */}
+      <motion.div
+        className="relative z-10 backdrop-blur-xl bg-white/5 p-8 rounded-2xl shadow-xl w-[90%] max-w-md text-white"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h2 className="text-2xl font-bold text-center mb-6">🔐 Student Login</h2>
 
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              required
-              value={form.email}
-              onChange={handleChange}
-              className="bg-[#0f172a] text-white px-4 py-2 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-              value={form.password}
-              onChange={handleChange}
-              className="bg-[#0f172a] text-white px-4 py-2 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              className="bg-cyan-400 hover:bg-cyan-300 text-black font-bold py-2 rounded-md transition duration-300"
-            >
-              Sign in
-            </button>
-          </form>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          />
+          <button
+            type="submit"
+            className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-bold py-2 px-4 rounded-lg transition"
+          >
+            🚀 Login
+          </button>
+        </form>
 
-          <div className="mt-4 text-center text-sm text-gray-300 space-y-1">
-            <p>
-              Don’t have an account?{" "}
-              <a href="/register" className="text-pink-400 hover:underline">Register</a>
-            </p>
-            <p>
-              Are you an admin?{" "}
-              <a href="/admin-login" className="text-blue-400 hover:underline">Login here</a>
-            </p>
-          </div>
+        {status && <p className="text-red-400 mt-2 text-center">{status}</p>}
+
+        <div className="text-center mt-4 text-sm text-gray-300">
+          <p>
+            Don’t have an account?{" "}
+            <a href="/register" className="text-cyan-400 hover:underline">Register</a>
+          </p>
+          <p className="mt-1">
+            Are you an admin?{" "}
+            <a href="/admin-login" className="text-cyan-400 hover:underline">Login here</a>
+          </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
