@@ -32,7 +32,7 @@ const Register = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-[#0f172a] overflow-hidden">
+    <div className="relative min-h-screen flex items-center justify-center bg-[#0f172a] overflow-hidden px-4">
       {/* Rotating glow effect */}
       <motion.div
         className="absolute w-[500px] h-[500px] bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full blur-3xl opacity-30"
@@ -52,7 +52,8 @@ const Register = () => {
             {[...Array(30)].map((_, i) => (
               <motion.div
                 key={i}
-                className="w-2 h-2 rounded-full bg-white absolute"
+                className="w-2 h-2 rounded-full absolute"
+                style={{ backgroundColor: randomColor() }}
                 initial={{
                   top: "50%",
                   left: "50%",
@@ -76,7 +77,7 @@ const Register = () => {
 
       {/* Card container */}
       <motion.div
-        className="relative z-10 backdrop-blur-xl bg-white/5 p-8 rounded-2xl shadow-2xl w-[90%] max-w-md text-white"
+        className="relative z-10 w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl text-white"
         initial={{ opacity: 0, y: 60, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -86,36 +87,25 @@ const Register = () => {
           🎓 Create Your Account
         </h2>
 
-        <form onSubmit={handleRegister} className="space-y-4">
-          <motion.input
-            whileFocus={{ scale: 1.02 }}
-            name="name"
-            placeholder="Full Name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
-          <motion.input
-            whileFocus={{ scale: 1.02 }}
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
-          <motion.input
-            whileFocus={{ scale: 1.02 }}
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className={inputStyle}
-          />
+        <form onSubmit={handleRegister} className="space-y-5">
+          {['name', 'email', 'password'].map((field, index) => (
+            <motion.div
+              key={field}
+              whileFocus={{ scale: 1.02 }}
+              className="relative"
+            >
+              <input
+                name={field}
+                type={field === 'password' ? 'password' : field}
+                placeholder={field === 'name' ? 'Full Name' : field.charAt(0).toUpperCase() + field.slice(1)}
+                value={form[field]}
+                onChange={handleChange}
+                required
+                className={inputStyle}
+              />
+            </motion.div>
+          ))}
+
           <motion.select
             whileFocus={{ scale: 1.02 }}
             name="role"
@@ -129,17 +119,17 @@ const Register = () => {
 
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.05, rotate: [-2, 2, -2] }}
+            whileHover={{ scale: 1.05, rotate: [-1, 1, -1] }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:brightness-110 text-white font-bold py-2 px-4 rounded-lg"
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:brightness-110 text-white font-bold py-2 px-4 rounded-lg shadow-lg"
           >
             🚀 Register
           </motion.button>
         </form>
 
-        <p className="text-sm text-center mt-5 text-gray-300">
-          Already have an account?{" "}
+        <p className="text-sm text-center mt-6 text-gray-300">
+          Already have an account?{' '}
           <a href="/login" className="text-pink-400 hover:underline">
             Login here
           </a>
@@ -151,5 +141,10 @@ const Register = () => {
 
 const inputStyle =
   "w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 text-white placeholder-gray-300";
+
+const randomColor = () => {
+  const colors = ["#f472b6", "#c084fc", "#60a5fa", "#34d399", "#facc15"];
+  return colors[Math.floor(Math.random() * colors.length)];
+};
 
 export default Register;
