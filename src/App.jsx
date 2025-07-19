@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AuthPage from "./pages/AuthPage"; // Google Login unified auth
+import Login from "./pages/Login";
 import StudentDashboard from "./pages/StudentDashboard";
 import Room from "./pages/Room";
 import Admin from "./pages/Admin";
@@ -8,13 +8,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Unified Google Login Page */}
-        <Route path="/" element={<AuthPage />} />
-
-        {/* Protected Routes (assume JWT or context handles access) */}
-        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/" element={<Login />} /> {/* 👈 default to Google login */}
+        <Route path="/login" element={<Login />} /> {/* 👈 optional direct route */}
         <Route path="/room/:roomId" element={<Room />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/student" element={<StudentDashboard />} />
       </Routes>
     </Router>
   );
