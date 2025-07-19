@@ -1,4 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AuthPage from "./pages/AuthPage";
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<AuthPage />} />
+        {/* Add your protected dashboard or room routes here */}
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
+
+
+
+'''import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StudentDashboard from "./pages/StudentDashboard";
 import Room from "./pages/Room";
 import Admin from "./pages/Admin";
@@ -22,3 +40,4 @@ function App() {
 }
 
 export default App;
+'''
