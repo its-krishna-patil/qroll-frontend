@@ -1,9 +1,9 @@
 import { GoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // ✅ correct import
 
 const GoogleAuth = () => {
   const handleSuccess = (credentialResponse) => {
-    const decoded = jwt_decode(credentialResponse.credential);
+    const decoded = jwtDecode(credentialResponse.credential); // ✅ updated usage
     console.log("Google user:", decoded);
     localStorage.setItem("user", JSON.stringify(decoded));
     // TODO: Navigate to dashboard or room
