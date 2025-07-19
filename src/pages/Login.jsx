@@ -1,4 +1,27 @@
-import { useState } from "react";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import GoogleAuth from '../components/GoogleAuth';
+
+const Login = () => {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+  return (
+    <GoogleOAuthProvider clientId={clientId}>
+      <div className="min-h-screen flex items-center justify-center bg-[#0f172a] text-white p-6">
+        <div className="bg-white/5 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+          <h1 className="text-2xl font-bold mb-4">🚀 Login to Qroll</h1>
+          <p className="mb-6 text-gray-300">Use your Google account to continue</p>
+          <GoogleAuth />
+        </div>
+      </div>
+    </GoogleOAuthProvider>
+  );
+};
+
+export default Login;
+
+
+
+'''import { useState } from "react";
 import API from "../api";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -94,3 +117,4 @@ const inputStyle =
   "w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 placeholder-gray-300";
 
 export default Login;
+'''
