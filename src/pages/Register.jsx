@@ -1,7 +1,7 @@
 import { useState } from "react";
 import API from '../api';
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,7 +12,7 @@ const Register = () => {
     password: "",
     role: "student",
   });
-
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,8 +23,9 @@ const Register = () => {
     e.preventDefault();
     try {
       await API.post("/api/register", form);
+      setSuccess(true);
       toast.success("✅ Registered successfully");
-      setTimeout(() => navigate("/login"), 1500);
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       toast.error(`❌ Registration failed: ${err.response?.data?.msg || "Server error"}`);
     }
@@ -32,25 +33,62 @@ const Register = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#0f172a] overflow-hidden">
-      {/* Rotating glow background */}
+      {/* Rotating glow effect */}
       <motion.div
         className="absolute w-[500px] h-[500px] bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full blur-3xl opacity-30"
         animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
       />
 
-      {/* Register form container */}
+      {/* Confetti burst on success */}
+      <AnimatePresence>
+        {success && (
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {[...Array(30)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-2 h-2 rounded-full bg-white absolute"
+                initial={{
+                  top: "50%",
+                  left: "50%",
+                  opacity: 1,
+                  scale: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                animate={{
+                  x: Math.random() * 400 - 200,
+                  y: Math.random() * 400 - 200,
+                  opacity: 0,
+                  scale: 0.5,
+                }}
+                transition={{ duration: 1.2, delay: i * 0.03 }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Card container */}
       <motion.div
-        className="relative z-10 backdrop-blur-xl bg-white/5 p-8 rounded-2xl shadow-xl w-[90%] max-w-md text-white"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        className="relative z-10 backdrop-blur-xl bg-white/5 p-8 rounded-2xl shadow-2xl w-[90%] max-w-md text-white"
+        initial={{ opacity: 0, y: 60, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <ToastContainer />
-        <h2 className="text-2xl font-bold text-center mb-6">🎓 Register</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 tracking-wide">
+          🎓 Create Your Account
+        </h2>
 
         <form onSubmit={handleRegister} className="space-y-4">
-          <input
+          <motion.input
+            whileFocus={{ scale: 1.02 }}
             name="name"
             placeholder="Full Name"
             value={form.name}
@@ -58,7 +96,8 @@ const Register = () => {
             required
             className={inputStyle}
           />
-          <input
+          <motion.input
+            whileFocus={{ scale: 1.02 }}
             name="email"
             type="email"
             placeholder="Email"
@@ -67,7 +106,8 @@ const Register = () => {
             required
             className={inputStyle}
           />
-          <input
+          <motion.input
+            whileFocus={{ scale: 1.02 }}
             name="password"
             type="password"
             placeholder="Password"
@@ -76,7 +116,8 @@ const Register = () => {
             required
             className={inputStyle}
           />
-          <select
+          <motion.select
+            whileFocus={{ scale: 1.02 }}
             name="role"
             value={form.role}
             onChange={handleChange}
@@ -84,29 +125,31 @@ const Register = () => {
           >
             <option value="student">Student</option>
             <option value="admin">Admin</option>
-          </select>
+          </motion.select>
 
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, rotate: [-2, 2, -2] }}
             whileTap={{ scale: 0.95 }}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-black font-bold py-2 px-4 rounded-lg transition"
+            transition={{ type: "spring", stiffness: 300 }}
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:brightness-110 text-white font-bold py-2 px-4 rounded-lg"
           >
             🚀 Register
           </motion.button>
         </form>
 
-        <p className="text-sm text-center mt-4 text-gray-300">
+        <p className="text-sm text-center mt-5 text-gray-300">
           Already have an account?{" "}
-          <a href="/login" className="text-pink-400 hover:underline">Login here</a>
+          <a href="/login" className="text-pink-400 hover:underline">
+            Login here
+          </a>
         </p>
       </motion.div>
     </div>
   );
 };
 
-// Tailwind class string for inputs
 const inputStyle =
-  "w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 text-white";
+  "w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 text-white placeholder-gray-300";
 
 export default Register;
